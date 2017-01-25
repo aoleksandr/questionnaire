@@ -54,8 +54,12 @@ module.exports = {
                 loader: 'file?name=[name].[ext]'
             },
             {
-                test: /(\.css|\.scss)$/,
-                loader: 'style!css'
+                test: /\.css$/,
+                loaders: ['style', 'css']
+            },
+            {
+                test: /\.scss$/,
+                loaders: ['style', 'css', 'sass']
             },
             {
                 test: /\.json$/,

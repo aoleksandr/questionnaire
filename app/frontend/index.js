@@ -1,7 +1,11 @@
 import React from 'react';
 import {render} from 'react-dom';
-import App from './components/AppComponent';
+import {Router, browserHistory} from 'react-router';
+import routes from './routes';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './style.css';
+import './style.scss';
 
-render(<App/>, document.getElementById('app'));
+render(
+    <Router history={browserHistory} routes={routes} />, 
+    document.getElementById('app')
+);
