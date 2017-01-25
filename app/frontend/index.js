@@ -1,12 +1,7 @@
-'use strict';
+import React from 'react';
+import {render} from 'react-dom';
+import App from './components/AppComponent';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import './style.css';
 
-require('./style.css');
-
-let btn = document.getElementById('btn-one');
-
-let test = 'new';
-
-
-btn.onclick = function() {
-    console.log(test);
-};
+render(<App/>, document.getElementById('app'));

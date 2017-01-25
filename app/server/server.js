@@ -33,9 +33,7 @@ if (env === 'local') {
     app.use(middleware);
     app.use(webpackHotMiddleware(compiler));
     app.get('*', function response(req, res) {
-        res.render('index', {
-            title: 'Questionnaire'
-        });
+        res.render('index');
     });
 } else {
     // app.get('*', function response(req, res) {
@@ -48,5 +46,5 @@ if (env === 'local') {
 app.listen(port, '0.0.0.0', err => {
     if (err) console.log(err);
 
-    console.info('Listening on port %s. Open up http://0.0.0.0:%s/ in your browser.', port, port);
+    console.info(`Listening on port ${port}`);
 });
