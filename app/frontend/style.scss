@@ -3,6 +3,17 @@
     margin: 30px auto;
     .header {
         border-bottom: 1px solid;
-        margin-bottom: 20px;
+        margin-bottom: 40px;
+    }
+    .stack-card {
+        border: 1px solid #CCCCCC;
+        border-radius: 4px;
+        &:hover {
+            background: #EEEEEE;
+        }
+        padding: 10px;
+    }
+    .add-stack-btn {
+        margin-bottom: 15px;
     }
 }
