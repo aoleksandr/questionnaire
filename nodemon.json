@@ -1,0 +1,16 @@
+{
+    "ignore": [
+        "node_modules"
+    ],
+    "verbose": true,
+    "execMap": {
+        "js": "node app/server/server.js"
+    },
+    "watch": [
+        "app/server"
+    ],
+    "env": {
+        "NODE_ENV": "local"
+    },
+    "ext": "js json"
+}
