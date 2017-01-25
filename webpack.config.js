@@ -10,7 +10,7 @@ module.exports = {
     noInfo: true,
     entry: [
         'webpack-hot-middleware/client',
-        'webpack/hot/dev-server',
+        // 'webpack/hot/only-dev-server',
         './app/frontend/index.js'
     ],
     watch: true,
@@ -27,10 +27,7 @@ module.exports = {
         loaders: [{
                 test: /\.jsx?$/,
                 exclude: /node_modules/,
-                loader: 'babel',
-                query: {
-                    'presets': ['react', 'es2015', 'stage-0']
-                }
+                loaders: ['react-hot', 'babel']
             },
             {
                 test: /\.eot(\?v=\d+.\d+.\d+)?$/,
