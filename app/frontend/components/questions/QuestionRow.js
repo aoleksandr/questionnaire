@@ -6,18 +6,33 @@ class QuestionRow extends React.Component {
         super();
 
         this.editClick = this.editClick.bind(this);
+        this.handleEdit = this.handleEdit.bind(this);
+        this.handleBlur = this.handleBlur.bind(this);
+        this.removeClick = this.removeClick.bind(this);
     }
 
     editClick() {
-        this.props.editFn(this.props.data.id);
+        this.props.editModeFn(this.props.data.id);
+    }
+
+    removeClick() {
+        this.props.removeFn(this.props.data.id);
+    }
+
+    handleBlur(event) {
+        this.props.updateFn(this.props.data.id, event.target.value, true);
+    }
+
+    handleEdit(event) {
+        this.props.updateFn(this.props.data.id, event.target.value);
     }
 
     render() {
         return (
             <tr>
-                <td>{ this.props.edit ? <input type="text" value={this.props.data.title} /> : this.props.data.title }</td>
+                <td>{this.props.editMode ? <input type="text" onChange={this.handleEdit} onBlur={this.handleBlur} value={this.props.data.title} /> : this.props.data.title}</td>
                 <td>{this.props.data.progress}/10</td>
-                <td><i className="fa fa-pencil" onClick={this.editClick}/> <i className="fa fa-trash"/></td>
+                <td><i className="fa fa-pencil" onClick={this.editClick}/> <i className="fa fa-trash" onClick={this.removeClick}/></td>
             </tr>
         );
     }
@@ -25,8 +40,10 @@ class QuestionRow extends React.Component {
 
 QuestionRow.propTypes = {
     data: PropTypes.object.isRequired,
-    edit: PropTypes.bool,
-    editFn: PropTypes.func.isRequired
+    editMode: PropTypes.bool,
+    editModeFn: PropTypes.func.isRequired,
+    updateFn: PropTypes.func.isRequired,
+    removeFn: PropTypes.func.isRequired
 };
 
 export default QuestionRow;

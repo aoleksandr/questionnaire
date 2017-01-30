@@ -9,38 +9,80 @@ class QuestionsPage extends React.Component {
     constructor(props, context) {
         super(props, context);
 
-        ApiProvider.fetchQuestions(this.props.params.stackId).then(res => {
-            this.setState({questions: res});
+        ApiProvider.fetchStack(this.props.params.stackId).then(res => {
+            this.setState({stack: res});
         });
 
         this.state = {
-            questions: [],
+            stack: {},
             editQuestionId: null
         };
 
         this.editClick = this.editClick.bind(this);
         this.addQuestion = this.addQuestion.bind(this);
+        this.updateQuestion = this.updateQuestion.bind(this);
+        this.questionsList = this.questionsList.bind(this);
+        this.removeQuestion = this.removeQuestion.bind(this);
+
     }
 
     addQuestion() {
-        let questions = Object.assign([], this.state.questions);
-        questions.push({
-            title: '',
-            progress: 0,
-            id: 8
+        ApiProvider.addQuestion(this.props.params.stackId).then(res => {
+            let stack = Object.assign([], this.state.stack);
+            stack.questions.push(res.data);
+            this.setState({
+                stack,
+                editQuestionId: res.data.id
+            });
         });
-        this.setState({questions});
+    }
+
+    updateQuestion(questionId, title, updateApi = false) {
+        let stack = Object.assign({}, this.state.stack);
+        stack.questions = stack.questions.map(question => {
+            if(question.id === questionId) {
+                question.title = title;
+            }
+            return question;
+        });
+
+        this.setState({stack});
+
+        if(updateApi) {
+            this.editClick(null);
+            //update api
+        }
+    }
+
+    removeQuestion(id) {
+        ApiProvider.removeQuestion(id).then(res => {
+            let stack = Object.assign({}, this.state.stack);
+            stack.questions = stack.questions.filter(q => q.id !== id);
+            this.setState({stack});
+        });
     }
 
     editClick(id) {
         this.setState({editQuestionId: id});
     }
 
+    questionsList() {
+        if(this.state.stack.questions) {
+            return this.state.stack.questions.map(q => 
+                <QuestionRow data={q} key={q.id} 
+                    editMode={this.state.editQuestionId === q.id} 
+                    editModeFn={this.editClick} 
+                    updateFn={this.updateQuestion}
+                    removeFn={this.removeQuestion} />
+            );
+        }                    
+    }
+
     render() {
         return (
             <div id="questions-page">
                 <Link to={'/'}>&larr; Back</Link>
-                <h3>Stack Nr. {this.props.params.stackId}</h3>
+                <h3>{this.state.stack.title}</h3>
                 <table className="table table-hover">
                     <thead>
                         <tr>
@@ -50,10 +92,11 @@ class QuestionsPage extends React.Component {
                         </tr>
                     </thead>
                     <tbody>
-                        { this.state.questions.map(q => <QuestionRow data={q} key={q.id} edit={this.state.editQuestionId === q.id} editFn={this.editClick}/>) }
+                        {this.questionsList()}
                     </tbody>
                 </table>
-                <Link className="add-question-btn btn btn-success" onClick={this.addQuestion}>Add Question</Link>
+                <Link className="add-question-btn btn btn-default" onClick={this.addQuestion}>Add Question</Link>
+                <Link className="add-question-btn btn btn-success pull-right" to={`/quiz/${this.props.params.stackId}`}><i className="fa fa-play"/> Start Quiz</Link>
             </div>
         );
     }
