@@ -1,12 +1,16 @@
 import React from 'react';
 import StackCard from './StackCard';
+import ApiProvider from '../../api/ApiProvider';
 
 class StacksPage extends React.Component {
     constructor(props, context) {
         super(props, context);
+        ApiProvider.fetchStacks().then(data => {
+            this.setState({stacks: data});
+        });
 
         this.state = {
-            stacks: [1,5,6]
+            stacks: []
         };
     }
 
@@ -15,7 +19,7 @@ class StacksPage extends React.Component {
             <div>
                 <a href="" className="btn btn-success add-stack-btn">Add stack</a>
                 <div className="row">
-                    { this.state.stacks.map(i => (<StackCard key={i} id={i} />)) }
+                    { this.state.stacks.map(stack => <StackCard key={stack.id} data={stack} />) }
                 </div>
             </div>
         );
