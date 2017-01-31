@@ -20,6 +20,8 @@ let questions = [{
     id: 3
 }];
 
+// stacks
+
 routes.get('/stacks', (req, res) => {
     res.json(stacks);
 });
@@ -30,6 +32,8 @@ routes.get('/stacks/:stackId', (req, res) => {
     res.json(response);
 });
 
+// questions
+
 routes.post('/questions', (req, res) => {
     id++;
     res.json({
@@ -39,6 +43,12 @@ routes.post('/questions', (req, res) => {
             title: '',
             progress: 0
         }
+    });
+});
+
+routes.put('/questions/:questionId', (req, res) => {
+    res.json({
+        status: 'ok'
     });
 });
 

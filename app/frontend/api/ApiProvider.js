@@ -13,6 +13,10 @@ export default {
 
     removeQuestion: questionId => {
         return jsonRequest(`questions/${questionId}`, 'delete');
+    },
+
+    updateQuestion: (questionId, progress) => {
+        return jsonRequest(`questions/${questionId}`, 'put', {progress: progress});
     }
 };
 

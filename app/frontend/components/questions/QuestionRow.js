@@ -31,7 +31,7 @@ class QuestionRow extends React.Component {
         return (
             <tr>
                 <td>{this.props.editMode ? <input type="text" onChange={this.handleEdit} onBlur={this.handleBlur} value={this.props.data.title} /> : this.props.data.title}</td>
-                <td>{this.props.data.progress}/10</td>
+                <td>{this.props.data.progress}/5</td>
                 <td><i className="fa fa-pencil" onClick={this.editClick}/> <i className="fa fa-trash" onClick={this.removeClick}/></td>
             </tr>
         );
