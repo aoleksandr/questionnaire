@@ -2,7 +2,10 @@ const express = require('express');
 const webpack = require('webpack');
 const webpackMiddleware = require('webpack-dev-middleware');
 const webpackHotMiddleware = require('webpack-hot-middleware');
-const config = require('../../webpack.config.js');
+const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
+const webpackConfig = require('../../webpack.config.js');
+const config = require('./config');
 
 const api = require('./api/api');
 
@@ -14,12 +17,18 @@ const app = express();
 app.set('view engine', 'ejs');
 app.set('views', __dirname);
 
+mongoose.Promise = global.Promise;
+mongoose.connect(config.db);
+
+app.use(bodyParser.json());
+
 app.use('/api/', api);
 
+
 if (env === 'local') {
-    const compiler = webpack(config);
+    const compiler = webpack(webpackConfig);
     const middleware = webpackMiddleware(compiler, {
-        publicPath: config.output.publicPath,
+        publicPath: webpackConfig.output.publicPath,
         contentBase: 'src',
         stats: {
             colors: true,

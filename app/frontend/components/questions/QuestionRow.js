@@ -12,26 +12,26 @@ class QuestionRow extends React.Component {
     }
 
     editClick() {
-        this.props.editModeFn(this.props.data.id);
+        this.props.editModeFn(this.props.data._id);
     }
 
     removeClick() {
-        this.props.removeFn(this.props.data.id);
+        this.props.removeFn(this.props.data._id);
     }
 
     handleBlur(event) {
-        this.props.updateFn(this.props.data.id, event.target.value, true);
+        this.props.updateFn(this.props.data._id, event.target.value, true);
     }
 
     handleEdit(event) {
-        this.props.updateFn(this.props.data.id, event.target.value);
+        this.props.updateFn(this.props.data._id, event.target.value);
     }
 
     render() {
         return (
             <tr>
                 <td>{this.props.editMode ? <input type="text" onChange={this.handleEdit} onBlur={this.handleBlur} value={this.props.data.title} /> : this.props.data.title}</td>
-                <td>{this.props.data.progress}/5</td>
+                <td>{this.props.data.progress || 0}/5</td>
                 <td><i className="fa fa-pencil" onClick={this.editClick}/> <i className="fa fa-trash" onClick={this.removeClick}/></td>
             </tr>
         );

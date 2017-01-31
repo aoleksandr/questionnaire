@@ -32,7 +32,7 @@ class QuestionsPage extends React.Component {
             stack.questions.push(res.data);
             this.setState({
                 stack,
-                editQuestionId: res.data.id
+                editQuestionId: res.data._id
             });
         });
     }
@@ -40,7 +40,7 @@ class QuestionsPage extends React.Component {
     updateQuestion(questionId, title, updateApi = false) {
         let stack = Object.assign({}, this.state.stack);
         stack.questions = stack.questions.map(question => {
-            if(question.id === questionId) {
+            if(question._id === questionId) {
                 question.title = title;
             }
             return question;
@@ -50,14 +50,18 @@ class QuestionsPage extends React.Component {
 
         if(updateApi) {
             this.editClick(null);
-            //update api
+            ApiProvider.updateQuestion(questionId, {title: title}).then(res => {
+                console.log('question updated ', res.status);
+            }, err => {
+                console.warn(err);
+            });
         }
     }
 
     removeQuestion(id) {
         ApiProvider.removeQuestion(id).then(res => {
             let stack = Object.assign({}, this.state.stack);
-            stack.questions = stack.questions.filter(q => q.id !== id);
+            stack.questions = stack.questions.filter(q => q._id !== id);
             this.setState({stack});
         });
     }
@@ -69,8 +73,8 @@ class QuestionsPage extends React.Component {
     questionsList() {
         if(this.state.stack.questions) {
             return this.state.stack.questions.map(q => 
-                <QuestionRow data={q} key={q.id} 
-                    editMode={this.state.editQuestionId === q.id} 
+                <QuestionRow data={q} key={q._id} 
+                    editMode={this.state.editQuestionId === q._id} 
                     editModeFn={this.editClick} 
                     updateFn={this.updateQuestion}
                     removeFn={this.removeQuestion} />

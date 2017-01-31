@@ -15,15 +15,19 @@ export default {
         return jsonRequest(`questions/${questionId}`, 'delete');
     },
 
-    updateQuestion: (questionId, progress) => {
-        return jsonRequest(`questions/${questionId}`, 'put', {progress: progress});
+    updateQuestion: (questionId, data) => {
+        return jsonRequest(`questions/${questionId}`, 'put', data);
     }
 };
 
 function jsonRequest(url, method = 'get', body = null) {
     return fetch(`/api/${url}`, {
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
         method: method,
-        body: body
+        body: body ? JSON.stringify(body) : null
     }).then(res => {
         return res.json();
     });

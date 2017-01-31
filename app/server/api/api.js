@@ -1,54 +1,36 @@
 const routes = require('express').Router();
-
-let id = 10;
-
-let stacks = [{
-    title: 'Stack 1',
-    id: 1
-}, {
-    title: 'Stack 2',
-    id: 2
-}];
-
-let questions = [{
-    title: 'What is JS',
-    progress: 5,
-    id: 1
-}, {
-    title: 'What is ReactJs',
-    progress: 3,
-    id: 3
-}];
+const Stack = require('./stacks/stack.model');
+const Question = require('./questions/question.model');
 
 // stacks
 
 routes.get('/stacks', (req, res) => {
-    res.json(stacks);
+    Stack.find().then(stacks => {
+        res.json(stacks);
+    });
 });
 
 routes.get('/stacks/:stackId', (req, res) => {
-    let response = stacks.find(stack => stack.id === parseInt(req.params.stackId, 10));
-    response.questions = questions;
-    res.json(response);
+    Stack.findOne({_id: req.params.stackId}).populate('questions').then(stack => {
+        res.json(stack);
+    });
 });
 
 // questions
 
 routes.post('/questions', (req, res) => {
-    id++;
-    res.json({
-        status: 'ok',
-        data: {
-            id: id,
-            title: '',
-            progress: 0
-        }
+    Question.create({title: '', progress: 0}).then(question => {
+        Stack.update({_id: req.body.stackId}, {$push: {questions: question._id}}).then(()=> {
+            res.json({status: 'ok', data: question});
+        });
     });
 });
 
 routes.put('/questions/:questionId', (req, res) => {
-    res.json({
-        status: 'ok'
+    Question.findOneAndUpdate({_id: req.params.questionId}, req.body).then(() => {
+        res.json({
+            status: 'ok'
+        });
     });
 });
 

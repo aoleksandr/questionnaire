@@ -19,7 +19,7 @@ class StacksPage extends React.Component {
             <div>
                 <a href="" className="btn btn-success add-stack-btn">Add stack</a>
                 <div className="row">
-                    { this.state.stacks.map(stack => <StackCard key={stack.id} data={stack} />) }
+                    { this.state.stacks.map(stack => <StackCard key={stack._id} data={stack} />) }
                 </div>
             </div>
         );
