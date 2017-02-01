@@ -37,11 +37,11 @@ class QuestionsPage extends React.Component {
         });
     }
 
-    updateQuestion(questionId, title, updateApi = false) {
+    updateQuestion(questionId, data, updateApi = false) {
         let stack = Object.assign({}, this.state.stack);
         stack.questions = stack.questions.map(question => {
             if(question._id === questionId) {
-                question.title = title;
+                question = Object.assign(question, data);
             }
             return question;
         });
@@ -50,7 +50,7 @@ class QuestionsPage extends React.Component {
 
         if(updateApi) {
             this.editClick(null);
-            ApiProvider.updateQuestion(questionId, {title: title}).then(res => {
+            ApiProvider.updateQuestion(questionId, data).then(res => {
                 console.log('question updated ', res.status);
             }, err => {
                 console.warn(err);
@@ -90,6 +90,7 @@ class QuestionsPage extends React.Component {
                 <table className="table table-hover">
                     <thead>
                         <tr>
+                            <th className="badge-row" />
                             <th>Question</th>
                             <th className="progress-row">Progress</th>
                             <th className="actions-row">Actions</th>

@@ -9,6 +9,7 @@ class QuizPage extends React.Component {
         super(props, context);
 
         ApiProvider.fetchStack(this.props.params.stackId).then(res => {
+            res.questions = res.questions.filter(question => question.progress < 5);
             this.setState({stack: res, loading: false});
             if(res.questions.length) {
                 this.pickRandomQuestion();
@@ -17,7 +18,7 @@ class QuizPage extends React.Component {
         
         this.state = {
             stack: {},
-            activeQuestion: {},
+            activeQuestion: null,
             complete: false,
             loading: true
         };
@@ -51,14 +52,14 @@ class QuizPage extends React.Component {
 
     handleMinus() {
         if(this.state.activeQuestion.progress > 0) {
-            ApiProvider.updateQuestion(this.state.activeQuestion.id, this.state.activeQuestion.progress - 1);
+            ApiProvider.updateQuestion(this.state.activeQuestion._id, { progress: this.state.activeQuestion.progress - 1 });
         }
         this.pickRandomQuestion();
     }
 
     handlePlus() {
         if(this.state.activeQuestion.progress < 5) {
-            ApiProvider.updateQuestion(this.state.activeQuestion.id, this.state.activeQuestion.progress + 1);
+            ApiProvider.updateQuestion(this.state.activeQuestion._id, { progress: this.state.activeQuestion.progress + 1 });
         }
         this.pickRandomQuestion();
     }
@@ -69,6 +70,9 @@ class QuizPage extends React.Component {
         }
         if(this.state.complete) {
             return <h1>Stack Complete</h1>;
+        }
+        if(!this.state.activeQuestion) {
+            return <h1>No questions to learn here</h1>;
         }
 
         return (
@@ -86,7 +90,7 @@ class QuizPage extends React.Component {
     render() {
         return (
             <div id="quiz-page">
-                <Link to={`/stack/${this.state.stack.id}`}>&larr; Back</Link>
+                <Link to={`/stack/${this.state.stack._id}`}>&larr; Back</Link>
                 <h3>{this.state.stack.title}</h3>
                 {this.questionBody()}
             </div>

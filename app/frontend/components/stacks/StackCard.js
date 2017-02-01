@@ -7,7 +7,7 @@ class StackCard extends React.Component {
             <div className="col-md-4">
                 <div className="stack-card">
                     <h4 className="stack-card-title">{this.props.data.title}</h4>
-                    <p className="stack-card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                    <p className="stack-card-text">Questions: {this.props.data.questions.length}</p>
                     <Link className="btn btn-primary btn-sm" to={`/stack/${this.props.data._id}`}>Go To Stack</Link>
                 </div>  
             </div>

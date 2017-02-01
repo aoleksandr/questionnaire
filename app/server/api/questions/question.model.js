@@ -7,12 +7,14 @@ let Question = new mongoose.Schema({
 });
 
 Question.pre('remove', function(next) {
-    this.model('Stack').update({ questions: this._id }, 
+    this.model('Stack').update(
+        { questions: this._id }, 
         { $pull: 
             { questions: this._id } 
-        }, 
-        { multi: true });
-    next();
+        })
+    .then(() => {
+            next();
+    });
 });
 
 module.exports = mongoose.model('Question', Question);
