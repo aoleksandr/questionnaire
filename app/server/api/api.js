@@ -35,8 +35,10 @@ routes.put('/questions/:questionId', (req, res) => {
 });
 
 routes.delete('/questions/:questionId', (req, res) => {
-    res.json({
-        status: 'ok'
+    Question.findOne({_id:req.params.questionId}).then(question => {
+        question.remove().then(()=> {
+            res.json({status:'ok'});
+        });
     });
 });
 
