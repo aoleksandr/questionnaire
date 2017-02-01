@@ -7,6 +7,24 @@ router.get('/', (req, res) => {
     });
 });
 
+router.post('/', (req, res) => {
+    Stack.create(req.body).then(stack => {
+        res.json({
+            status:'ok',
+            data: stack
+        });
+    });
+});
+
+router.delete('/:stackId', (req, res) => {
+    Stack.findOne({_id: req.params.stackId}).then(stack => {
+        stack.remove().then(() => {
+            res.json({status: 'ok'});
+        });
+    });
+
+});
+
 router.get('/:stackId', (req, res) => {
     Stack.findOne({_id: req.params.stackId}).populate('questions').then(stack => {
         res.json(stack);

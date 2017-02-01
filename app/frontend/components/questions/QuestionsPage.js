@@ -59,7 +59,7 @@ class QuestionsPage extends React.Component {
     }
 
     removeQuestion(id) {
-        ApiProvider.removeQuestion(id).then(res => {
+        ApiProvider.removeQuestion(id).then(() => {
             let stack = Object.assign({}, this.state.stack);
             stack.questions = stack.questions.filter(q => q._id !== id);
             this.setState({stack});

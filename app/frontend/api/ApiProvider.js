@@ -1,26 +1,34 @@
 export default {
     fetchStacks: () => {
-        return jsonRequest('stacks');
+        return request('stacks');
     },
 
     fetchStack: stackId => {
-        return jsonRequest(`stacks/${stackId}`);
+        return request(`stacks/${stackId}`);
+    },
+
+    addStack: title => {
+        return request('stacks', 'post', {title: title, quesitons: []});
+    },
+
+    removeStack: stackId => {
+        return request(`stacks/${stackId}`, 'delete');
     },
 
     addQuestion: stackId => {
-        return jsonRequest('questions', 'post', {stackId: stackId});
+        return request('questions', 'post', {stackId: stackId});
     },
 
     removeQuestion: questionId => {
-        return jsonRequest(`questions/${questionId}`, 'delete');
+        return request(`questions/${questionId}`, 'delete');
     },
 
     updateQuestion: (questionId, data) => {
-        return jsonRequest(`questions/${questionId}`, 'put', data);
+        return request(`questions/${questionId}`, 'put', data);
     }
 };
 
-function jsonRequest(url, method = 'get', body = null) {
+function request(url, method = 'get', body = null) {
     return fetch(`/api/${url}`, {
         headers: {
             'Accept': 'application/json',

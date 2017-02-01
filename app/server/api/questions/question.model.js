@@ -13,7 +13,7 @@ Question.pre('remove', function(next) {
             { questions: this._id } 
         })
     .then(() => {
-            next();
+        next();
     });
 });
 
