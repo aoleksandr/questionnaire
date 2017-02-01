@@ -11,7 +11,7 @@ module.exports = {
     entry: [
         'webpack-hot-middleware/client',
         // 'webpack/hot/only-dev-server',
-        './app/frontend/index.js'
+        './app/client/index.js'
     ],
     watch: true,
     output: {
