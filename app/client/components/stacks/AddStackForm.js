@@ -33,7 +33,7 @@ class AddStackForm extends React.Component {
         return this.state.active ? 
             (<div className="stack-add-form">
                 <input value={this.state.title} onChange={this.handleChange} className="form-control" type="text" placeholder="Stack Name" /> 
-                <Link className="btn btn-success" onClick={this.submit}>Save</Link> 
+                <Link className="btn btn-success save-btn" onClick={this.submit}>Save</Link> 
                 <Link className="btn btn-default" onClick={this.toggleMode}>Cancel</Link>
             </div>) : 
             (<div className="stack-add-form">

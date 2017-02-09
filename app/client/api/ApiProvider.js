@@ -1,29 +1,34 @@
 export default {
-    fetchStacks: () => {
+    fetchStacks() {
         return request('stacks');
     },
 
-    fetchStack: stackId => {
+    fetchStack(stackId) {
         return request(`stacks/${stackId}`);
     },
 
-    addStack: title => {
-        return request('stacks', 'post', {title: title, quesitons: []});
+    addStack(title) {
+        return request('stacks', 'post', {
+            title: title,
+            quesitons: []
+        });
     },
 
-    removeStack: stackId => {
+    removeStack(stackId) {
         return request(`stacks/${stackId}`, 'delete');
     },
 
-    addQuestion: stackId => {
-        return request('questions', 'post', {stackId: stackId});
+    addQuestion(stackId) {
+        return request('questions', 'post', {
+            stackId: stackId
+        });
     },
 
-    removeQuestion: questionId => {
+    removeQuestion(questionId) {
         return request(`questions/${questionId}`, 'delete');
     },
 
-    updateQuestion: (questionId, data) => {
+    updateQuestion(questionId, data) {
         return request(`questions/${questionId}`, 'put', data);
     }
 };

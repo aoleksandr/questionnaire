@@ -21,7 +21,7 @@ class StackCard extends React.Component {
                 <div className="stack-card">
                     <h4 className="stack-card-title">{this.props.data.title}</h4>
                     <p className="stack-card-text">Questions: {this.props.data.questions.length}</p>
-                    <Link className="btn btn-primary btn-sm" to={`/stack/${this.props.data._id}`}>Go To Stack</Link>
+                    <Link className="btn btn-default btn-sm" to={`/stack/${this.props.data._id}`}>Go To Stack</Link>
                     <Link className="btn btn-danger btn-sm pull-right" onClick={this.removeHandler}><i className="fa fa-trash" /></Link>
                 </div>
             </div>
