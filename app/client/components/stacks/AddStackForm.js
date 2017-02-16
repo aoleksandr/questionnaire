@@ -1,5 +1,4 @@
 import React, {PropTypes} from 'react';
-import {Link} from 'react-router';
 
 class AddStackForm extends React.Component {
     constructor() {
@@ -10,34 +9,34 @@ class AddStackForm extends React.Component {
             title: ''
         };
 
-        this.toggleMode = this.toggleMode.bind(this);
-        this.handleChange = this.handleChange.bind(this);
-        this.submit = this.submit.bind(this);
+        this.toggleActive = this.toggleActive.bind(this);
+        this.onTitleChange = this.onTitleChange.bind(this);
+        this.onClickSave = this.onClickSave.bind(this);
     }
 
-    handleChange(event) {
+    onTitleChange(event) {
         this.setState({title: event.target.value});
     }
 
-    submit() {
+    onClickSave() {
         this.props.addFn(this.state.title);
-        this.toggleMode();
+        this.toggleActive();
         this.setState({title: ''});
     }
 
-    toggleMode() {
+    toggleActive() {
         this.setState({active: !this.state.active});
     }
 
     render() {
         return this.state.active ? 
             (<div className="stack-add-form">
-                <input value={this.state.title} onChange={this.handleChange} className="form-control" type="text" placeholder="Stack Name" /> 
-                <Link className="btn btn-success save-btn" onClick={this.submit}>Save</Link> 
-                <Link className="btn btn-default" onClick={this.toggleMode}>Cancel</Link>
+                <input value={this.state.title} onChange={this.onTitleChange} className="form-control" type="text" placeholder="Stack Name" /> 
+                <button className="btn btn-success save-btn" onClick={this.onClickSave}>Save</button> 
+                <button className="btn btn-default" onClick={this.toggleActive}>Cancel</button>
             </div>) : 
             (<div className="stack-add-form">
-                <Link onClick={this.toggleMode} className="btn btn-success add-stack-btn">Add stack</Link>
+                <button onClick={this.toggleActive} className="btn btn-success add-stack-btn">Add stack</button>
             </div>) ;
     }
 }

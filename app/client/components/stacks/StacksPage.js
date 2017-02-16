@@ -1,4 +1,7 @@
-import React from 'react';
+import React, {PropTypes} from 'react';
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
+import * as stackActions from '../../actions/stackActions';
 import StackCard from './StackCard';
 import ApiProvider from '../../api/ApiProvider';
 import AddStackForm from './AddStackForm';
@@ -26,9 +29,14 @@ class StacksPage extends React.Component {
     }
 
     addStack(title) {
-        ApiProvider.addStack(title).then(res => {
-            this.setState({stacks: [...this.state.stacks, res.data]});
+        this.props.actions.createStack({
+            _id: 1,
+            title: title,
+            questions: []
         });
+        // ApiProvider.addStack(title).then(res => {
+        //     this.setState({stacks: [...this.state.stacks, res.data]});
+        // });
     }
 
     render() { 
@@ -36,11 +44,28 @@ class StacksPage extends React.Component {
             <div>
                 <AddStackForm addFn={this.addStack} />
                 <div className="row">
-                    { this.state.stacks.map(stack => <StackCard key={stack._id} data={stack} removeFn={this.removeStack} />) }
+                    { this.props.stacks.map(stack => <StackCard key={stack._id} data={stack} removeFn={this.removeStack} />) }
                 </div>
             </div>
         );
     }
 }
 
-export default StacksPage;
+StacksPage.propTypes = {
+    stacks: PropTypes.array.isRequired,
+    actions: PropTypes.object.isRequired
+};
+
+function mapStateToProps(state) {
+    return {
+        stacks: state.stacks
+    };
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        actions: bindActionCreators(stackActions, dispatch)
+    };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(StacksPage);
