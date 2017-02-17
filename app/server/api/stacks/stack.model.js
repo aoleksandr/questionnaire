@@ -3,18 +3,12 @@ mongoose.Promise = global.Promise;
 
 
 let Stack = new mongoose.Schema({
-    title: String,
-    questions: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Question'
-    }],
+    title: String
 });
 
 Stack.pre('remove', function (next) {
     this.model('Question').remove({
-        _id: {
-            $in: this.questions
-        }
+        stack: this._id
     }).then(()=> {
         next();
     });

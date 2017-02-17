@@ -18,6 +18,10 @@ export default {
         return request(`stacks/${stackId}`, 'delete');
     },
 
+    fetchQuestions() {
+        return request('questions');
+    },
+
     addQuestion(stackId) {
         return request('questions', 'post', {
             stackId: stackId

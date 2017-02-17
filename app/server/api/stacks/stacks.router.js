@@ -26,7 +26,7 @@ router.delete('/:stackId', (req, res) => {
 });
 
 router.get('/:stackId', (req, res) => {
-    Stack.findOne({_id: req.params.stackId}).populate('questions').then(stack => {
+    Stack.findOne({_id: req.params.stackId}).then(stack => {
         res.json(stack);
     });
 });

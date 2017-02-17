@@ -5,12 +5,14 @@ import {Provider} from 'react-redux';
 import {Router, browserHistory} from 'react-router';
 import routes from './routes';
 import {loadStacks} from './actions/stackActions';
+import {loadQuestions} from './actions/questionActions';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'font-awesome/css/font-awesome.css';
 import './style.scss';
 
 const store = configureStore();
 store.dispatch(loadStacks());
+store.dispatch(loadQuestions());
 
 render(
     <Provider store={store}>

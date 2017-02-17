@@ -2,8 +2,14 @@ const router = require('express').Router();
 const Question = require('./question.model');
 const Stack = require('../stacks/stack.model');
 
+router.get('/', (req, res) => {
+    Question.find().then(questions => {
+        res.json(questions);
+    });
+});
+
 router.post('/', (req, res) => {
-    Question.create({title: '', progress: 0}).then(question => {
+    Question.create({title: '', progress: 0, stack: req.body.stackId}).then(question => {
         Stack.update({_id: req.body.stackId}, {$push: {questions: question._id}}).then(()=> {
             res.json({status: 'ok', data: question});
         });
@@ -11,9 +17,10 @@ router.post('/', (req, res) => {
 });
 
 router.put('/:questionId', (req, res) => {
-    Question.findOneAndUpdate({_id: req.params.questionId}, req.body).then(() => {
+    Question.findOneAndUpdate({_id: req.params.questionId}, req.body, {new: true}).then(question => {
         res.json({
-            status: 'ok'
+            status: 'ok',
+            data: question
         });
     });
 });

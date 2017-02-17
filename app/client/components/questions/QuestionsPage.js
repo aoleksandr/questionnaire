@@ -1,7 +1,11 @@
 import React, {PropTypes} from 'react';
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
 import {Link} from 'react-router';
 import QuestionRow from './QuestionRow';
 import ApiProvider from '../../api/ApiProvider';
+import * as stackActions from '../../actions/stackActions';
+import * as questionActions from '../../actions/questionActions';
 
 import './questions.scss';
 
@@ -9,12 +13,7 @@ class QuestionsPage extends React.Component {
     constructor(props, context) {
         super(props, context);
 
-        ApiProvider.fetchStack(this.props.params.stackId).then(res => {
-            this.setState({stack: res});
-        });
-
         this.state = {
-            stack: {},
             editQuestionId: null
         };
 
@@ -23,39 +22,15 @@ class QuestionsPage extends React.Component {
         this.updateQuestion = this.updateQuestion.bind(this);
         this.questionsList = this.questionsList.bind(this);
         this.removeQuestion = this.removeQuestion.bind(this);
-
     }
 
     addQuestion() {
-        ApiProvider.addQuestion(this.props.params.stackId).then(res => {
-            let stack = Object.assign([], this.state.stack);
-            stack.questions.push(res.data);
-            this.setState({
-                stack,
-                editQuestionId: res.data._id
-            });
-        });
+        this.props.actions.createQuestion(this.props.params.stackId);
     }
 
-    updateQuestion(questionId, data, updateApi = false) {
-        let stack = Object.assign({}, this.state.stack);
-        stack.questions = stack.questions.map(question => {
-            if(question._id === questionId) {
-                question = Object.assign(question, data);
-            }
-            return question;
-        });
-
-        this.setState({stack});
-
-        if(updateApi) {
-            this.editClick(null);
-            ApiProvider.updateQuestion(questionId, data).then(res => {
-                console.log('question updated ', res.status);
-            }, err => {
-                console.warn(err);
-            });
-        }
+    updateQuestion(questionId, data) {
+        this.props.actions.updateQuestion(questionId, data);
+        this.editClick(null);
     }
 
     removeQuestion(id) {
@@ -71,22 +46,20 @@ class QuestionsPage extends React.Component {
     }
 
     questionsList() {
-        if(this.state.stack.questions) {
-            return this.state.stack.questions.map(q => 
-                <QuestionRow data={q} key={q._id} 
-                    editMode={this.state.editQuestionId === q._id} 
-                    editModeFn={this.editClick} 
-                    updateFn={this.updateQuestion}
-                    removeFn={this.removeQuestion} />
-            );
-        }                    
+        return this.props.questions.map(q => 
+            <QuestionRow data={q} key={q._id} 
+                editMode={this.state.editQuestionId === q._id} 
+                editModeFn={this.editClick} 
+                updateFn={this.updateQuestion}
+                removeFn={this.removeQuestion} />
+        );                   
     }
 
     render() {
         return (
             <div id="questions-page">
                 <Link to={'/'}>&larr; Back</Link>
-                <h3>{this.state.stack.title}</h3>
+                <h3>{this.props.stack.title}</h3>
                 <table className="table table-hover">
                     <thead>
                         <tr>
@@ -108,7 +81,26 @@ class QuestionsPage extends React.Component {
 }
 
 QuestionsPage.propTypes = {
-    params: PropTypes.object.isRequired
+    params: PropTypes.object.isRequired,
+    stack: PropTypes.object.isRequired,
+    questions: PropTypes.array.isRequired,
+    actions: PropTypes.object.isRequired
 };
 
-export default QuestionsPage;
+function mapStateToProps(state, ownProps) {
+    let stack = state.stacks.find(stack => stack._id === ownProps.params.stackId) || {};
+    return {
+        stack: stack,
+        questions: state.questions.filter(question => {
+            return question.stack === stack._id;
+        })
+    };
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        actions: bindActionCreators(Object.assign({}, stackActions, questionActions), dispatch)
+    };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(QuestionsPage);
