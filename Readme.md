@@ -1,3 +1,14 @@
 # Questionnaire
 
-This is a dummy project used as a playground for some shiny and fancy tools for front-end web development. 
+A simple quiz project used as a sandbox for react-based stack.
+
+## Technologies used
+
+* react
+* webpack
+* express
+* mongo
+
+## Redux branch
+
+[here](https://github.com/aoleksandr/questionnaire/tree/redux)
