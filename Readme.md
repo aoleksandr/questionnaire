@@ -1,3 +1,11 @@
 # Questionnaire
 
-This is a dummy project used as a playground for some shiny and fancy tools for front-end web development. 
+A simple quiz project used as a sandbox for react-based stack (with redux).
+
+## Technologies used
+
+* react
+* redux
+* webpack
+* express
+* mongo

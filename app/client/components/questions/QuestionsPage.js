@@ -3,7 +3,6 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {Link} from 'react-router';
 import QuestionRow from './QuestionRow';
-import ApiProvider from '../../api/ApiProvider';
 import * as stackActions from '../../actions/stackActions';
 import * as questionActions from '../../actions/questionActions';
 
@@ -34,11 +33,7 @@ class QuestionsPage extends React.Component {
     }
 
     removeQuestion(id) {
-        ApiProvider.removeQuestion(id).then(() => {
-            let stack = Object.assign({}, this.state.stack);
-            stack.questions = stack.questions.filter(q => q._id !== id);
-            this.setState({stack});
-        });
+        this.props.actions.removeQuestion(id);
     }
 
     editClick(id) {

@@ -1,8 +1,10 @@
 import * as types from './actionTypes';
 import ApiProvider from '../api/ApiProvider';
+import {beginAjaxCall} from './ajaxActions';
 
 export function loadStacks() {
     return function (dispatch) {
+        dispatch(beginAjaxCall());
         return ApiProvider.fetchStacks().then(stacks => {
             dispatch({
                 type: types.LOAD_STACKS_SUCCESS,
